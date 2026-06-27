@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - NutriTracker{% endblock %}
+
+{% block content %}
+<div style="margin-top: 2rem;">
+    <div class="profile-header">
+        <h2>👤 {{ current_user.username }}</h2>
+        <p style="opacity: 0.9;">{{ current_user.email }}</p>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-item">
+            <div class="profile-info-label">Age</div>
+            <div class="profile-info-value">{{ current_user.age or 'Not set' }}</div>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Weight</div>
+            <div class="profile-info-value">{{ current_user.weight or 'Not set' }}</div>
+            <small>kg</small>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Height</div>
+            <div class="profile-info-value">{{ current_user.height or 'Not set' }}</div>
+            <small>cm</small>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">BMI</div>
+            <div class="profile-info-value">
+                {% if current_user.calculate_bmi() %}
+                    {{ current_user.calculate_bmi() }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-item">
+            <div class="profile-info-label">Gender</div>
+            <div class="profile-info-value">{{ current_user.gender or 'Not set' }}</div>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Activity Level</div>
+            <div class="profile-info-value">{{ current_user.activity_level or 'Not set' }}</div>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Goal</div>
+            <div class="profile-info-value">{{ current_user.goal or 'Not set' }}</div>
+        </div>
+        <div class="profile-info-item">
+            <div class="profile-info-label">Daily Calories</div>
+            <div class="profile-info-value">
+                {% if current_user.calculate_calorie_requirement() %}
+                    {{ current_user.calculate_calorie_requirement() }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url_for('main.edit_profile') }}" class="btn btn-primary">✏️ Edit Profile</a>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary" style="margin-left: 1rem;">📊 Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

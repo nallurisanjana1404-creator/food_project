@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}NutriTracker - Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-emoji">🍎🥗🍌🥦🥑</div>
+    <h1>Welcome to NutriTracker</h1>
+    <p>Your Personal AI-Powered Nutrition & Diet Tracking Companion</p>
+    <p style="font-size: 1rem; margin-top: 1rem; opacity: 0.9;">Track your meals • Monitor nutrition • Achieve your fitness goals</p>
+    <div style="margin-top: 2rem;">
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">Get Started Now 🚀</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary" style="margin-left: 1rem;">Sign In 🔓</a>
+        {% else %}
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">Go to Dashboard 📊</a>
+        {% endif %}
+    </div>
+</div>
+
+<section>
+    <h2 style="text-align: center; font-size: 2.5rem; margin: 3rem 0 2rem 0; color: var(--color-dark);">
+        ✨ Features That Transform Your Health
+    </h2>
+    
+    <div class="dashboard-grid" style="margin-top: 3rem;">
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-apple);">
+            <h3>🔓 Smart Login</h3>
+            <p>Secure authentication with personalized user profiles and health data storage.</p>
+        </div>
+        
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-banana);">
+            <h3>❤️ Health Assessment</h3>
+            <p>Calculate BMI, daily calorie requirements, and get personalized recommendations based on your data.</p>
+        </div>
+        
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-broccoli);">
+            <h3>🤖 AI Diet Plans</h3>
+            <p>Get personalized diet recommendations and meal suggestions powered by advanced algorithms.</p>
+        </div>
+        
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-carrot);">
+            <h3>🍽️ Meal Tracking</h3>
+            <p>Track breakfast, lunch, dinner, and snacks with our comprehensive food database.</p>
+        </div>
+        
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-blueberry);">
+            <h3>📊 Nutrition Monitoring</h3>
+            <p>Monitor calories, protein, carbs, fats, and water intake in real-time with detailed analytics.</p>
+        </div>
+        
+        <div class="dashboard-card" style="border-top: 4px solid var(--color-eggplant);">
+            <h3>📈 Progress Dashboard</h3>
+            <p>Visualize your weekly progress, track goals, and celebrate your achievements with detailed reports.</p>
+        </div>
+    </div>
+</section>
+
+<section style="background: linear-gradient(135deg, var(--color-broccoli), var(--color-blueberry)); padding: 3rem 2rem; border-radius: 15px; color: white; text-align: center; margin: 3rem 0;">
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">🎯 Who Is NutriTracker For?</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 2rem;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">👨‍🎓 Students</div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">💼 Professionals</div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">🏋️ Fitness Enthusiasts</div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">⬇️ Weight Loss Seekers</div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">⬆️ Muscle Gainers</div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">❤️ Health Conscious</div>
+    </div>
+</section>
+
+<section style="text-align: center; padding: 3rem 2rem;">
+    <h2 style="font-size: 2rem; margin-bottom: 1rem; color: var(--color-dark);">🚀 Ready to Transform Your Health?</h2>
+    <p style="font-size: 1.1rem; margin-bottom: 2rem; color: #666;">Join thousands of users who are already achieving their fitness goals with NutriTracker!</p>
+    {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('auth.signup') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Start Your Journey Today 🌟</a>
+    {% endif %}
+</section>
+{% endblock %}

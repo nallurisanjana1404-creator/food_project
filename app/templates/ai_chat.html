@@ -1,0 +1,103 @@
+% extends "base.html" %}
+
+{% block title %}AI Nutrition Chat{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ai_chat.css') }}">
+
+<div class="chat-page">
+
+    <!-- Header -->
+    <div class="chat-header">
+
+        <div>
+            <h1>🤖 AI Nutrition Assistant</h1>
+            <p>Ask anything about food, nutrition, fitness and healthy living.</p>
+        </div>
+
+        <a href="{{ url_for('main.dashboard') }}" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <!-- Quick Suggestions -->
+    <div class="suggestions">
+
+        <button class="suggestion">🥗 Suggest today's diet</button>
+
+        <button class="suggestion">🍎 Healthy breakfast ideas</button>
+
+        <button class="suggestion">💪 High protein foods</button>
+
+        <button class="suggestion">🔥 Weight loss tips</button>
+
+        <button class="suggestion">💧 Water intake advice</button>
+
+        <button class="suggestion">🥜 Healthy snacks</button>
+
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-box" class="chat-box">
+
+        <!-- Welcome Bot Message -->
+        <div class="message bot">
+
+            <div class="avatar">
+                🤖
+            </div>
+
+            <div class="bubble">
+
+                <h3>👋 Hello {{ current_user.username }}</h3>
+
+                <p>
+                    I'm your personal <b>AI Nutrition Coach</b>.
+                </p>
+
+                <p>
+                    I can help you with:
+                </p>
+
+                <ul>
+                    <li>🥗 Healthy Meal Plans</li>
+                    <li>⚖ Weight Loss Guidance</li>
+                    <li>💪 Muscle Gain Diets</li>
+                    <li>🔥 Calorie Tracking</li>
+                    <li>🍎 Food Recommendations</li>
+                    <li>💧 Hydration Advice</li>
+                </ul>
+
+                <p>
+                    Ask me anything to get started!
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Input Area -->
+    <div class="chat-input">
+
+        <textarea
+            id="question"
+            placeholder="Type your nutrition question here..."
+            rows="2">
+        </textarea>
+
+        <button id="sendBtn">
+            🚀 Send
+        </button>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/ai_chat.js') }}"></script>
+
+{% endblock %}
+```

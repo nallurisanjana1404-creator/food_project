@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Progress - NutriTracker{% endblock %}
+
+{% block content %}
+<div style="margin-top: 2rem;">
+    <h1 style="color: var(--color-dark); margin-bottom: 1rem;">📈 Your Progress</h1>
+
+    <div style="background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">🎯 Set a New Goal</h3>
+        <form method="POST" action="{{ url_for('main.set_goal') }}" style="display: grid; gap: 1rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                <div class="form-group" style="margin: 0;">
+                    <label for="goal_type">Goal Type</label>
+                    <select name="goal_type" id="goal_type" required>
+                        <option value="">Select goal type</option>
+                        <option value="weight_loss">⬇️ Weight Loss</option>
+                        <option value="weight_gain">⬆️ Weight Gain</option>
+                        <option value="fitness">💪 Fitness</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label for="target_value">Target Value (kg)</label>
+                    <input type="number" name="target_value" id="target_value" step="0.1" required>
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label for="target_date">Target Date</label>
+                    <input type="date" name="target_date" id="target_date" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">🎯 Set Goal</button>
+        </form>
+    </div>
+
+    <h2 style="color: var(--color-dark); margin: 2rem 0 1rem 0;">🏆 Your Goals</h2>
+    
+    {% if goals %}
+        <div style="display: grid; gap: 1rem;">
+            {% for goal in goals %}
+                <div class="goal-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h4>
+                                {% if goal.goal_type == 'weight_loss' %}
+                                    ⬇️ Weight Loss
+                                {% elif goal.goal_type == 'weight_gain' %}
+                                    ⬆️ Weight Gain
+                                {% else %}
+                                    💪 Fitness Goal
+                                {% endif %}
+                            </h4>
+                            <p>
+                                <strong>Target:</strong> {{ goal.target_value }} kg | 
+                                <strong>Current:</strong> {{ goal.current_value or 'N/A' }} kg | 
+                                <strong>Target Date:</strong> {{ goal.target_date }}
+                            </p>
+                            
+                            {% if goal.current_value and goal.target_value %}
+                                {% set progress_pct = ((goal.current_value - goal.target_value) / (goal.current_value - goal.target_value)) * 100 if (goal.current_value - goal.target_value) != 0 else 0 %}
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 50%;"></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <form method="POST" action="{{ url_for('main.update_current_weight') }}" style="margin-left: 1rem; display: flex; gap: 0.5rem; align-items: flex-end;">
+                            <input type="hidden" name="goal_id" value="{{ goal.id }}">
+                            <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
+                                <div>
+                                    <label style="font-size: 0.85rem; margin-bottom: 0.2rem;">Current Weight (kg)</label>
+                                    <input type="number" name="current_weight" value="{{ goal.current_value or '' }}" step="0.1" style="width: 100px; padding: 0.4rem;" required>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Update ✅</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; color: #666;">
+            <p style="font-size: 1.1rem;">No goals set yet. Start by setting your first goal! 🎯</p>
+        </div>
+    {% endif %}
+
+    <h2 style="color: var(--color-dark); margin: 2rem 0 1rem 0;">📊 Last 7 Days Nutrition</h2>
+    
+    {% if last_7_days %}
+        <div class="chart-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>📅 Date</th>
+                        <th>🔥 Calories</th>
+                        <th>🥩 Protein (g)</th>
+                        <th>🌾 Carbs (g)</th>
+                        <th>🧈 Fat (g)</th>
+                        <th>💧 Water (L)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in last_7_days %}
+                        <tr>
+                            <td>{{ day.date }}</td>
+                            <td>{{ day.total_calories | round(0) }}</td>
+                            <td>{{ day.total_protein | round(1) }}</td>
+                            <td>{{ day.total_carbs | round(1) }}</td>
+                            <td>{{ day.total_fat | round(1) }}</td>
+                            <td>{{ day.water_intake | round(1) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; color: #666;">
+            <p style="font-size: 1.1rem;">No nutrition data available yet. Start tracking your meals! 📊</p>
+        </div>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">📊 Back to Dashboard</a>
+        <a href="{{ url_for('main.meals') }}" class="btn btn-primary" style="margin-left: 1rem;">🍽️ Log Meals</a>
+    </div>
+</div>
+{% endblock %}
